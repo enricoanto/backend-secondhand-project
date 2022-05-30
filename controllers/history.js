@@ -13,7 +13,7 @@ class HistoryController {
             res.status(200).json(histories)
 
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
     static async getHistoryById(req, res, next) {
@@ -26,7 +26,7 @@ class HistoryController {
             })
                 res.status(200).json(history)
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
 }

@@ -10,7 +10,7 @@ class NotificationController {
             })
             res.status(200).json(notifications)
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
 
     }
@@ -20,7 +20,7 @@ class NotificationController {
             const notifications = await Notification.findByPk(req.params.id)
             res.status(200).json(notifications)
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
 }

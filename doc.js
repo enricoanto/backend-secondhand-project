@@ -3,8 +3,16 @@ const swaggerJsdoc = require('swagger-jsdoc')
 
 /**
  * @swagger
+ * tags:
+ *  - name: auth
+ *  - name: seller
+ *  - name: buyer
+ *  - name: history
+ *  - name: notification
  * /auth/register:
  *  post:
+ *   tags:
+ *    - auth
  *   description: Register Account
  *   requestBody:
  *    content:
@@ -15,11 +23,11 @@ const swaggerJsdoc = require('swagger-jsdoc')
  *        full_name:
  *         type: string
  *         description: Full Name
- *         example: Enrico Dwidhanto Indrawan
+ *         example: John Doe
  *        email:
  *         type: string
  *         description: Email
- *         example: enrico@mail.com
+ *         example: johndoe@mail.com
  *        password:
  *         type: string
  *         description: Password
@@ -31,7 +39,7 @@ const swaggerJsdoc = require('swagger-jsdoc')
  *        address:
  *         type: string
  *         description: Location/City
- *         example: Bandung
+ *         example: Jakarta
  *        image:
  *         type: string
  *         format: binary
@@ -45,6 +53,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /auth/login:
  *  post:
+ *   tags:
+ *    - auth
  *   description: Login Account
  *   requestBody:
  *    content:
@@ -55,7 +65,7 @@ const swaggerJsdoc = require('swagger-jsdoc')
  *        email:
  *         type: string
  *         description: Email
- *         example: enrico@mail.com
+ *         example: johndoe@mail.com
  *        password:
  *         type: string
  *         description: Password
@@ -66,11 +76,15 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /buyer/order:
  *  post:
+ *   tags:
+ *    - buyer
  *   description: Create Order
  *   parameters:
  *    - in: header
  *      name: access_token
  *      required: true
+ *    - in: header
+ *      name: reg_token
  *   requestBody:
  *    content:
  *     application/json:
@@ -91,6 +105,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /buyer/order:
  *  get:
+ *   tags:
+ *    - buyer
  *   description: Fetch Orders
  *   parameters:
  *    - in: header
@@ -102,6 +118,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /buyer/order/{id}:
  *  get:
+ *   tags:
+ *    - buyer
  *   description: Fetch Order By ID
  *   parameters:
  *    - in: header
@@ -119,6 +137,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /buyer/order/{id}:
  *  put:
+ *   tags:
+ *    - buyer
  *   description: Edit Order By Id
  *   parameters:
  *    - in: header
@@ -147,6 +167,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /buyer/order/{id}:
  *  delete:
+ *   tags:
+ *    - buyer
  *   description: Delete Order By ID
  *   parameters:
  *    - in: header
@@ -161,6 +183,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /buyer/product:
  *  get:
+ *   tags:
+ *    - buyer
  *   description: Fetch Products
  *   parameters:
  *    - in: header
@@ -172,6 +196,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /buyer/product/{id}:
  *  get:
+ *   tags:
+ *    - buyer
  *   description: Fetch Product By ID
  *   parameters:
  *    - in: header
@@ -186,6 +212,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /seller/order:
  *  get:
+ *   tags:
+ *    - seller
  *   description: Get Orders
  *   parameters:
  *    - in: header
@@ -197,6 +225,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /seller/order/{id}:
  *  get:
+ *   tags:
+ *    - seller
  *   description: Fetch Order By ID
  *   parameters:
  *    - in: header
@@ -213,6 +243,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  *     description: success
  * /seller/order/product/{product_id}:
  *  get:
+ *   tags:
+ *    - seller
  *   description: Fetch Order By Product ID
  *   parameters:
  *    - in: header
@@ -230,11 +262,15 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /seller/order/{id}:
  *  patch:
+ *   tags:
+ *    - seller
  *   description: Edit Order By ID
  *   parameters:
  *    - in: header
  *      name: access_token
  *      required: true
+ *    - in: header
+ *      name: reg_token
  *    - in: path
  *      name: id   # Note the name is the same as in the path
  *      required: true
@@ -258,6 +294,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /seller/product:
  *  post:
+ *   tags:
+ *    - seller
  *   description: Fetch Products
  *   parameters:
  *    - in: header
@@ -296,6 +334,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /seller/product:
  *  get:
+ *   tags:
+ *    - seller
  *   description: Register Account
  *   parameters:
  *    - in: header
@@ -307,6 +347,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /seller/product/{id}:
  *  get:
+ *   tags:
+ *    - seller
  *   description: Register Account
  *   parameters:
  *    - in: header
@@ -321,6 +363,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /seller/product/{id}:
  *  put:
+ *   tags:
+ *    - seller
  *   description: Fetch Products
  *   parameters:
  *    - in: header
@@ -362,6 +406,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
 * @swagger
  * /seller/product/{id}:
  *  delete:
+ *   tags:
+ *    - seller
  *   description: Register Account
  *   parameters:
  *    - in: header
@@ -376,6 +422,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /history:
  *  get:
+ *   tags:
+ *    - history
  *   description: Register Account
  *   parameters:
  *    - in: header
@@ -384,57 +432,11 @@ const swaggerJsdoc = require('swagger-jsdoc')
  *   responses:
  *    200:
  *     description: success
-  * /history/{id}:
- *  get:
- *   description: Register Account
- *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
- *    - in: path
- *      name: id   # Note the name is the same as in the path
- *      required: true
- *   responses:
- *    200:
- *     description: success
- * @swagger
- * /history:
- *  get:
- *   description: Register Account
- *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
- *   responses:
- *    200:
- *     description: success 
  * /history/{id}:
  *  get:
+ *   tags:
+ *    - history
  *   description: Register Account
- *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
- *    - in: path
- *      name: id   # Note the name is the same as in the path
- *      required: true
- *   responses:
- *    200:
- *     description: success
- * @swagger
- * /history:
- *  get:
- *   description: Fetch Histories
- *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
- *   responses:
- *    200:
- *     description: success
-  * /history/{id}:
- *  get:
- *   description: Fetch History By ID
  *   parameters:
  *    - in: header
  *      name: access_token
@@ -448,6 +450,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  * @swagger
  * /notification:
  *  get:
+ *   tags:
+ *    - notification
  *   description: Fetch Notifications
  *   parameters:
  *    - in: header
@@ -458,6 +462,8 @@ const swaggerJsdoc = require('swagger-jsdoc')
  *     description: success 
  * /notification/{id}:
  *  get:
+ *   tags:
+ *    - notification
  *   description: Fetch Notification By ID
  *   parameters:
  *    - in: header

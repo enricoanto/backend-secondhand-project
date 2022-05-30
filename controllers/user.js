@@ -15,7 +15,7 @@ class UserController {
                 email
             }})
             if (userExist) {
-                res.status(400).json({ name: 'bad request', msg: 'Email already exists'})
+                return next({name: "badRequestEmail"})
             }
             var image_url 
             if (!req.files || Object.keys(req.files).length === 0) {
@@ -30,7 +30,7 @@ class UserController {
             const newUser = await User.create({ full_name, email, password, phone_number, address, image_url })
             res.status(201).json(newUser)
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
     static async login(req, res, next) {
@@ -42,9 +42,9 @@ class UserController {
                 }
             })
             if (!user) {
-                res.status(401).json({ name: 'Unauthorized', msg: "email or password are wrong" })
+               next({ name: 'wrongEmailPassword'})
             } else if (!comparePassword(password, user.password)) {
-                res.status(401).json({ name: 'Unauthorized', msg: "email or password are wrong" })
+                next({ name: 'wrongEmailPassword'})
             } else {
                 const access_token = signToken({email: user.email})
                 const userLogin =  {
@@ -55,21 +55,21 @@ class UserController {
                 res.status(201).json(userLogin)
             }
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
     static async getUserById(req, res, next) {
         try {
             const user = await User.findByPk(req.params.id)
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
     static async editUser(req, res, next) {
         try {
 
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
 }

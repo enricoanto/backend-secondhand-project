@@ -8,7 +8,6 @@ app.locals.bucket = admin.storage().bucket()
 class ProductController {
     static async addProduct(req, res, next) {
         try {
-
             const user_id = req.userData.id
             const { name, base_price, category, location } = req.body
             
@@ -33,10 +32,10 @@ class ProductController {
                 const newProduct = await Product.create({ name, base_price, category, location, user_id, image_url, image_name })
                 res.status(201).json(newProduct)
             } else {
-                res.status(400).json({ name: 'Bad Request', msg: 'max products' })
+                next({name: 'maxProducts'})
             }
         } catch (err) {
-            res.status(500).json(err)
+           next(err)
         }
     }
     static async getMyProducts(req, res, next) {
@@ -51,7 +50,7 @@ class ProductController {
             res.status(200).json(products)
 
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
     static async getProductById(req, res, next) {
@@ -60,7 +59,7 @@ class ProductController {
             const product = await Product.findByPk(id)
             res.status(200).json(product)
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
     static async editProduct(req, res, next) {
@@ -91,7 +90,7 @@ class ProductController {
             })
             res.status(200).json(updateProduct[1][0])
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
     static async deleteProduct(req, res, next) {
@@ -111,10 +110,7 @@ class ProductController {
                 }
             })
             if (productExist.length) {
-                res.status(400).json({
-                    name: "Bad Request",
-                    msg: "Product has been ordered"
-                })
+                next({ name: "redundantOrder" })
             } else {
                 await Product.destroy({
                     where: {
@@ -127,7 +123,7 @@ class ProductController {
                 })
             }
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
 }

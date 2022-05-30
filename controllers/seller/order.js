@@ -22,7 +22,7 @@ class OrderController {
             })
             res.status(200).json(orders)
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
     static async getOrdersByProduct(req, res, next) {
@@ -45,7 +45,7 @@ class OrderController {
             })
             res.status(200).json(orders)
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
     static async getOrderById(req, res, next) {
@@ -69,7 +69,7 @@ class OrderController {
             res.status(200).json(order)
 
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
     static async editOrder(req, res, next) {
@@ -144,7 +144,7 @@ class OrderController {
         }
             res.status(200).json(order[1][0])
         } catch (err) {
-            res.status(500).json(err)
+            next(err)
         }
     }
 }
