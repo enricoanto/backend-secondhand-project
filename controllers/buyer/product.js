@@ -1,17 +1,28 @@
 'use strict'
-const { Product } = require('../../models')
+const { Product, Category } = require('../../models')
 const { Op } = require("sequelize");
 
 class ProductController {
     static async getMyProducts(req, res, next) {
         try {
-            const user_id = +req.userData.id
+            const {status, category_id } = req.query;
+            let filter = []
+            if (status) { filter.push ({status}) }
+            if (category_id) { filter.push({'$Categories.id$': category_id})}
+
             const products = await Product.findAll({
                 where: {
-                    user_id: {
-                        [Op.not]: user_id
+                    [Op.and]: filter
+                },
+                include: [{
+                    model: Category,
+                    through: {
+                        attributes: []
+                    },
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
                     }
-                }
+                }]
             })
             res.status(200).json(products)
 
@@ -20,18 +31,23 @@ class ProductController {
         }
     }
     static async getProductById(req, res, next) {
-        const user_id = +req.userData.id
         const id = req.params.id
         try {
             const product = await Product.findOne({
                 where: {
-                    id,
-                    user_id: {
-                        [Op.not]: user_id
+                    id
+                },
+                include: [{
+                    model: Category,
+                    through: {
+                        attributes: []
+                    },
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt', 'ProductCategory']
                     }
-                }
+                }]
             })
-                res.status(200).json(product)
+            res.status(200).json(product)
         } catch (err) {
             next(err)
         }

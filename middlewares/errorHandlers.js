@@ -14,6 +14,14 @@ const errorHandler = (err, req, res, next) => {
             err.message = "Max 5 products"
             code = 400
             break
+        case "forBiddenBuy":
+            err.message = "You cannot buy your own product"
+            code = 400
+            break
+        case "maxOrders":
+            err.message = "This product has maximum orders"
+            code = 400
+            break
         case "redundantOrder":
             err.message = "Product has been order"
             code = 400

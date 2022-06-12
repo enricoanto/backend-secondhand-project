@@ -19,17 +19,32 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: "id",
         foreignKey: "product_id"
       })
+      Product.hasMany(models.ProductCategory, {
+        sourceKey: 'id',
+        foreignKey: 'product_id'
+      })
+      Product.belongsToMany(models.Category, {
+        through: models.ProductCategory,
+        targetKey: 'id',
+        foreignKey: 'product_id'
+      })
     }
   };
   Product.init({
     name: DataTypes.STRING,
+    description: DataTypes.STRING,
     base_price: DataTypes.INTEGER,
-    category: DataTypes.STRING,
     image_url: DataTypes.STRING,
     image_name: DataTypes.STRING,
     location: DataTypes.STRING,
-    user_id: DataTypes.INTEGER
+    user_id: DataTypes.INTEGER,
+    status: DataTypes.STRING
   }, {
+    hooks: {
+      beforeCreate: (product) => {
+        product.status = 'available'
+      }
+    },
     sequelize,
     modelName: 'Product',
   });

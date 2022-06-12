@@ -11,12 +11,15 @@ class OrderController {
                 where: {
                     id: product_id
                 },
-                include: ['User']
+                include: ['User', 'Orders']
             })
+            
             const buyer = await User.findByPk(buyer_id)
             if (product.user_id == buyer_id) {
-                res.status(400).json({ name: "Bad Request", msg: "You cannot buy your own product" })
-            } else {
+                next({ name: "forBiddenBuy" })
+            } else if (product.Orders.length == 4) {
+                next({name: 'maxOrders'})
+            }else {
                 const orderExist = await Order.findOne({
                     where: {
                         product_id,
@@ -24,7 +27,7 @@ class OrderController {
                     }
                 })
                 if (orderExist) {
-                    res.status(400).json({ name: "bad Request", msg: "you has order for this product" })
+                    next({ name: "redundantOrder" })
                 } else {
                     const order = await Order.create({ buyer_id, product_id, price: bid_price })
                     await Notification.create({ product_id, bid_price, transaction_date: new Date(), status: "bid", seller_name: product.User.full_name, buyer_name: buyer.full_name, receiver_id: buyer_id })
@@ -114,7 +117,7 @@ class OrderController {
                 }
             })
             if (product) {
-                res.status(400).json({ name: "Bad Request", msg: "You cannot buy your own product" })
+                next({name: 'forBiddenBuy'})
             } else {
                 const orderExist = await Order.findOne({
                     where: {
@@ -123,7 +126,7 @@ class OrderController {
                     }
                 })
                 if (orderExist) {
-                    res.status(400).json({ name: "bad Request", msg: "you has order for this product" })
+                    next({ name: "redundantOrder" })
                 } else {
                     const order = await Order.update({
                         buyer_id,
@@ -145,7 +148,12 @@ class OrderController {
     }
     static async deleteOrder(req, res, nex) {
         try {
-
+            const id = req.params.id
+            await Order.destroy({
+                where: {
+                    id
+                }
+            })
         } catch (err) {
             next(err)
         }
