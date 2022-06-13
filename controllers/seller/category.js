@@ -21,7 +21,6 @@ class CategoryController {
     static async getCategoryById(req, res, next) {
         try {
             const id = req.params.id
-            console.log(id)
             const category = await Category.findByPk(id)
             res.status(200).json(category)
         } catch (err) {

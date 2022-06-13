@@ -14,7 +14,6 @@ class CategoryController {
                 image_url = null
             } else {
                 let image = req.files.image;
-                console.log(image)
                 image_name = `BAN-${Number(new Date())}-${image.name}`
                 image_url = `https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/banner%2F${image_name}?alt=media`
                 await app.locals.bucket.file(`banner/${image_name}`).createWriteStream().end(req.files.image.data)
@@ -29,7 +28,6 @@ class CategoryController {
     static async getBanners(req, res, next) {
         try {
             const user_id = req.userData.id
-            console.log(user_id)
             const banners = await Banner.findAll({where: {user_id}})
             res.status(200).json(banners)
         } catch (err) {
