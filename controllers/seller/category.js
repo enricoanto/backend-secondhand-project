@@ -4,7 +4,16 @@ class CategoryController {
     static async addCategory(req, res, next) {
         try {
             const { name } = req.body
-            const category = await Category.create({name})
+            const existCategory = await Category.findOne({
+                where: {
+                    name: name.toLowerCase()
+                }
+            }) 
+            
+            if (existCategory) {
+                return res.status(400).json({name: "duplicateCategory", message: "Category has been exist"})
+            }
+            const category = await Category.create({name: name.toLowerCase()})
             res.status(201).json(category)
         } catch (err) {
             next(err)
