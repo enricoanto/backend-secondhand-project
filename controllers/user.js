@@ -83,7 +83,7 @@ class UserController {
                 image_url = `https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/avatar%2F${img_name}?alt=media`
                 await app.locals.bucket.file(`avatar/${img_name}`).createWriteStream().end(req.files.image.data)
             }
-            
+
 
             const updateUser = await User.update({ full_name, email, password: hashPassword(password), phone_number, address, image_url }, {
                 where: { id },
@@ -92,6 +92,28 @@ class UserController {
             res.status(200).json(updateUser[1][0])
         } catch (err) {
             next(err)
+        }
+    }
+
+    static async show(req, res) {
+        try {
+            const users = await User.findAll()
+            res.status(200).json(users)
+        } catch (err) {
+            res.status(500).json(err)
+        }
+    }
+    static async delete(req, res) {
+        try {
+            const id = req.params.id
+            const users = await User.destroy({
+                where: {
+                    id
+                }
+            })
+            res.status(200).json(users)
+        } catch (err) {
+            res.status(500).json(err)
         }
     }
 }

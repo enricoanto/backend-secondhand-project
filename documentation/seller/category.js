@@ -34,7 +34,6 @@
  *      name: access_token
  *      required: true
  *      schema:
- *        type: integer
  *        description: The car ID
  *   responses:
  *    201:
