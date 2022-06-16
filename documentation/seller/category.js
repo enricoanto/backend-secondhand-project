@@ -5,7 +5,6 @@
  *   tags:
  *    - seller
  *   description: Add Category
- *   parameters:
  *   requestBody:
  *    content:
  *     multipart/form-data:
