@@ -6,9 +6,6 @@
  *    - seller
  *   description: Add Category
  *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
  *   requestBody:
  *    content:
  *     multipart/form-data:
@@ -29,14 +26,8 @@
  *   tags:
  *    - seller
  *   description: Fetch Order By ID
- *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
- *      schema:
- *        description: The car ID
  *   responses:
- *    201:
+ *    200:
  *     description: OK
  * /seller/category/{id}:
  *  get:
@@ -44,9 +35,6 @@
  *    - seller
  *   description: Fetch Category by ID
  *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
  *    - in: path
  *      name: id
  *      required: true
@@ -63,9 +51,6 @@
  *    - seller
  *   description: Delete Category By ID
  *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
  *    - in: path
  *      name: id   # Note the name is the same as in the path
  *      required: true

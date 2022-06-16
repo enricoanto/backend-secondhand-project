@@ -6,9 +6,6 @@
  *    - buyer
  *   description: Fetch Products
  *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
  *    - in: query
  *      name: status
  *    - in: query
@@ -56,14 +53,6 @@
  *               name: Electronic
  *             - id: 4
  *               name: Food
- *    403:
- *     description: Unauthorized
- *     content:
- *      body:
- *       schema:
- *        example:
- *         name: notLogin
- *         message: You are not login/access_token is wrong
  *    500:
  *     description: Internal Service Error
  * @swagger
@@ -73,9 +62,6 @@
  *    - buyer
  *   description: Fetch Product By ID
  *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
  *    - in: path
  *      name: id   # Note the name is the same as in the path
  *      required: true
@@ -112,14 +98,6 @@
  *        example:
  *         name: productNotFound
  *         message: Product is not found
- *    403:
- *     description: Unauthorized
- *     content:
- *      body:
- *       schema:
- *        example:
- *         name: notLogin
- *         message: You are not login/access_token is wrong
  *    500:
  *     description: Internal Service Error
  */
