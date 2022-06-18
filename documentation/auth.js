@@ -97,6 +97,7 @@
 *     content:
 *      schema:
 *       example: 
+*        id: 1
 *        name: John Doe
 *        email: johndoe@mail.com
 *        access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAbWFpbC5jb20iLCJpYXQiOjE2NTQ5MjcxODZ9.fghFryd8OPEHztZlrN50PtZj0EC7NWFVj2iPPN9xi1M
@@ -110,7 +111,7 @@
 *    500:
 *     description: Internal Service Error
 * @swagger
-* /auth/user/{id}:
+* /auth/user:
 *  get:
 *   tags:
 *    - auth

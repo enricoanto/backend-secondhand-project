@@ -48,7 +48,23 @@ const swaggerJsdoc = require('swagger-jsdoc')
  *      required: true
  *   responses:
  *    200:
- *     description: OK 
+ *     description: OK
+ *     content:
+ *      body:
+ *       schema:
+ *        example:
+ *         - id: 1
+ *           product_id: 1
+ *           bid_price: 1000000
+ *           transaction_date: 2000-01-01T00:00:00.000Z
+ *           status: bid
+ *           seller_name: john_doe
+ *           buyer_name: michael
+ *           receiver_id: 2
+ *           image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-sepatu.jpg?alt=media
+ *           read: false
+ *           created_at: 2000-01-01T00:00:00.000Z
+ *           updated_at: 2000-01-01T00:00:00.000Z
  * @swagger
  * /notification/{id}:
  *  get:
@@ -65,6 +81,22 @@ const swaggerJsdoc = require('swagger-jsdoc')
  *   responses:
  *    200:
  *     description: OK
+ *     content:
+ *      body:
+ *       schema:
+ *        example:
+ *         id: 1
+ *         product_id: 1
+ *         bid_price: 1000000
+ *         transaction_date: 2000-01-01T00:00:00.000Z
+ *         status: bid
+ *         seller_name: john_doe
+ *         buyer_name: michael
+ *         receiver_id: 2
+ *         image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-sepatu.jpg?alt=media
+ *         read: false
+ *         created_at: 2000-01-01T00:00:00.000Z
+ *         updated_at: 2000-01-01T00:00:00.000Z
  * @swagger
  * /notification/{id}:
  *  patch:
@@ -81,6 +113,22 @@ const swaggerJsdoc = require('swagger-jsdoc')
  *   responses:
  *    200:
  *     description: OK
+ *     content:
+ *      body:
+ *       schema:
+ *        example:
+ *         id: 1
+ *         product_id: 1
+ *         bid_price: 1000000
+ *         transaction_date: 2000-01-01T00:00:00.000Z
+ *         status: bid
+ *         seller_name: john_doe
+ *         buyer_name: michael
+ *         receiver_id: 2
+ *         image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-sepatu.jpg?alt=media
+ *         read: true
+ *         created_at: 2000-01-01T00:00:00.000Z
+ *         updated_at: 2000-01-01T00:00:00.000Z
  */
 
 
