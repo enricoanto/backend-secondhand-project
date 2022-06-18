@@ -49,8 +49,25 @@ const swaggerJsdoc = require('swagger-jsdoc')
  *   responses:
  *    200:
  *     description: OK 
+ * @swagger
  * /notification/{id}:
  *  get:
+ *   tags:
+ *    - notification
+ *   description: Fetch Notification By ID
+ *   parameters:
+ *    - in: header
+ *      name: access_token
+ *      required: true
+ *    - in: path
+ *      name: id   # Note the name is the same as in the path
+ *      required: true
+ *   responses:
+ *    200:
+ *     description: OK
+ * @swagger
+ * /notification/{id}:
+ *  patch:
  *   tags:
  *    - notification
  *   description: Fetch Notification By ID

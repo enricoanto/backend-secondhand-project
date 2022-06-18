@@ -5,5 +5,6 @@ const Auth = require('../middlewares/autentication')
 
 router.get ('/', Auth.authentication, NotificationController.fetchAllNotifications)
 router.get ('/:id',Auth.authentication, NotificationController.getNotificationById)
+router.patch ('/:id',Auth.authentication, NotificationController.readNotificationById)
 
 module.exports = router

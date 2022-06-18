@@ -50,6 +50,7 @@ class UserController {
             } else {
                 const access_token = signToken({ email: user.email })
                 const userLogin = {
+                    id: user.id,
                     name: user.full_name,
                     email: user.email,
                     access_token

@@ -23,5 +23,13 @@ class NotificationController {
             next(err)
         }
     }
+    static async readNotificationById(req, res, next) {
+        try {
+            const notifications = await Notification.findOne({read: true}, {where: {id: req.params.id}, returning:true})
+            res.status(200).json(notifications[1][0])
+        } catch (err) {
+            next(err)
+        }
+    }
 }
 module.exports = NotificationController
