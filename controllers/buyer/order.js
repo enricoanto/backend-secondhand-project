@@ -30,8 +30,8 @@ class OrderController {
                     next({ name: "redundantOrder" })
                 } else {
                     const order = await Order.create({ buyer_id, product_id, price: bid_price })
-                    await Notification.create({ product_id, bid_price, transaction_date: new Date(), status: "bid", seller_name: product.User.full_name, buyer_name: buyer.full_name, receiver_id: buyer_id })
-                    await Notification.create({ product_id, bid_price, transaction_date: new Date(), status: "bid", seller_name: product.User.full_name, buyer_name: buyer.full_name, receiver_id: product.user_id })
+                    await Notification.create({ product_id, bid_price, transaction_date: new Date(), status: "bid", seller_name: product.User.full_name, buyer_name: buyer.full_name, receiver_id: buyer_id, image_url: product.image_url })
+                    await Notification.create({ product_id, bid_price, transaction_date: new Date(), status: "bid", seller_name: product.User.full_name, buyer_name: buyer.full_name, receiver_id: product.user_id, image_url: product.image_url })
                     if (registrationToken) {
                         var option = {
                             priority: "high",

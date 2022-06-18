@@ -1,5 +1,5 @@
 'use strict'
-const { Product, ProductCategory, Category } = require('../../models')
+const { Product, ProductCategory, Category, Order } = require('../../models')
 const { Op } = require("sequelize");
 const admin = require('../../helpers/firebase');
 const app = require('express')()

@@ -20,8 +20,15 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.STRING,
     seller_name: DataTypes.STRING,
     buyer_name: DataTypes.STRING,
-    receiver_id: DataTypes.INTEGER
-  }, {
+    receiver_id: DataTypes.INTEGER,
+    image_url: DataTypes.INTEGER,
+    read: DataTypes.BOOLEAN
+  }, { 
+    hooks: {
+      beforeCreate: (notif) => {
+        notif.read = false
+      }
+  },
     sequelize,
     modelName: 'Notification',
   });

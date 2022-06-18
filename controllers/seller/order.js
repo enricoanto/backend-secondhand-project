@@ -105,6 +105,11 @@ class OrderController {
                     status: order[1][0].status,
                     user_id: req.userData.id
                 })
+                await Product.update({status: 'sold'}, {
+                    where: {
+                        id: product.id
+                    }
+                })
             } 
             await Notification.create({
                  product_id: product.id,
@@ -113,7 +118,8 @@ class OrderController {
                  status, 
                  seller_name: product.User.full_name,
                  buyer_name: buyer.full_name,
-                 receiver_id: buyer.id
+                 receiver_id: buyer.id,
+                 image_url: product.image_url
             })
             await Notification.create({
                 product_id: product.id,
@@ -122,7 +128,8 @@ class OrderController {
                 status, 
                 seller_name: product.User.full_name,
                 buyer_name: buyer.full_name,
-                receiver_id: product.user_id
+                receiver_id: product.user_id,
+                image_url: product.image_url
            })
            if (registrationToken) {
             var option = {
