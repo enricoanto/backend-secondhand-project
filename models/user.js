@@ -72,7 +72,17 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    image_url: DataTypes.STRING
+    image_url: DataTypes.STRING,
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'City cannot empty'
+        }
+      }
+    },
   }, {
     hooks: {
       beforeCreate: (user) => {

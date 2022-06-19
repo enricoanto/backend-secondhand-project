@@ -72,7 +72,9 @@
  *       properties:
  *        status:
  *         type: string
+ *       example:
+ *        status: accepted/declined
  *   responses:
- *    201:
+ *    200:
  *     description: OK
  */

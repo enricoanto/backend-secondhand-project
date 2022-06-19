@@ -10,6 +10,8 @@
  *      name: status
  *    - in: query
  *      name: category_id
+ *    - in: query
+ *      name: search
  *   responses:
  *    200:
  *     description: OK

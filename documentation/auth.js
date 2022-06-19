@@ -43,6 +43,10 @@
 *         format: binary
 *         description: format jpg/png
 *         example: avatar.jpg
+*        city:
+*         type: string
+*         description: Location/City
+*         example: Jakarta
 *   responses:
 *    201:
 *     description: OK
@@ -134,6 +138,7 @@
 *         phone_number: 81121934455
 *         address: Jakarta
 *         image_url: null
+*         city: Jakarta
 *         createdAt: 2000-01-01T00:00:00.000Z
 *         updatedAt: 2000-01-01T00:00:00.000Z
 *    500:
@@ -179,6 +184,10 @@
 *         format: binary
 *         description: format jpg/png
 *         example: avatar.jpg
+*        city:
+*         type: string
+*         description: Location/City
+*         example: Jakarta
 *   responses:
 *    201:
 *     description: OK

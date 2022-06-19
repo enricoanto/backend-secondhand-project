@@ -5,10 +5,13 @@ const { Op } = require("sequelize");
 class ProductController {
     static async getMyProducts(req, res, next) {
         try {
-            const {status, category_id } = req.query;
+            const { status, category_id, search } = req.query;
             let filter = []
-            if (status) { filter.push ({status}) }
-            if (category_id) { filter.push({'$Categories.id$': category_id})}
+            if (status) { filter.push({ status }) }
+            if (category_id) { filter.push({ '$Categories.id$': category_id }) }
+            if (search) {
+                filter.push({ name: { [Op.like]: `%${search}%` } })
+            }
 
             const products = await Product.findAll({
                 where: {

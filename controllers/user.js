@@ -10,7 +10,7 @@ app.locals.bucket = admin.storage().bucket()
 class UserController {
     static async register(req, res, next) {
         try {
-            const { full_name, email, password, phone_number, address } = req.body
+            const { full_name, email, password, phone_number, address, city } = req.body
             const userExist = await User.findOne({
                 where: {
                     email
@@ -29,7 +29,7 @@ class UserController {
                 await app.locals.bucket.file(`avatar/${img_name}`).createWriteStream().end(req.files.image.data)
             }
 
-            const newUser = await User.create({ full_name, email, password, phone_number, address, image_url })
+            const newUser = await User.create({ full_name, email, password, phone_number, address, image_url, city })
             res.status(201).json(newUser)
         } catch (err) {
             next(err)
@@ -72,7 +72,7 @@ class UserController {
     static async editUser(req, res, next) {
         try {
             const id = req.userData.id
-            let { full_name, email, password, phone_number, address } = req.body
+            let { full_name, email, password, phone_number, address, city } = req.body
 
             const user = await User.findByPk(req.userData.id)
             var image_url
@@ -86,7 +86,14 @@ class UserController {
             }
 
 
-            const updateUser = await User.update({ full_name, email, password: hashPassword(password), phone_number, address, image_url }, {
+            const updateUser = await User.update({ 
+                full_name: full_name ? full_name : user.full_name,
+                email: email ? email : user.email,
+                password: password ? hashPassword(password) : user.password,
+                phone_number: phone_number ? phone_number : user.phone_number,
+                address: address ? address : user. address,
+                image_url: image_url ? image_url : user.image_url,
+                city: city ? city : user.city }, {
                 where: { id },
                 returning: true
             })
