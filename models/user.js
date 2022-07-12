@@ -53,35 +53,14 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     phone_number: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          args: true,
-          msg: "phone number cannot empty"
-        }
-      }
+      type: DataTypes.STRING
     },
     address: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          args: true,
-          msg: 'Address cannot empty'
-        }
-      }
+      type: DataTypes.STRING
     },
     image_url: DataTypes.STRING,
     city: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          args: true,
-          msg: 'City cannot empty'
-        }
-      }
+      type: DataTypes.STRING
     },
   }, {
     hooks: {

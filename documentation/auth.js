@@ -11,12 +11,8 @@
 *      schema:
 *       type: object
 *       required:
-*        - full_name
 *        - email
 *        - password
-*        - phone_number
-*        - address
-*        - image
 *       properties:
 *        full_name:
 *         type: string
@@ -36,8 +32,8 @@
 *         example: 081121934455
 *        address:
 *         type: string
-*         description: Location/City
-*         example: Jakarta
+*         description: Address
+*         example: Mampang PrPt. 
 *        image:
 *         type: string
 *         format: binary
@@ -59,8 +55,9 @@
 *         email: johndoe@mail.com
 *         password: $2b$10$A7gqzQD5E/NJl4NJHeLpEuHK8cIsFLEBz4RSLKqua8N1EKFnB53Vy
 *         phone_number: 81121934455
-*         address: Jakarta
-*         image_url: null
+*         address: Mampang PrPt.
+*         image_url: nul
+*         city: Jakarta
 *         createdAt: 2000-01-01T00:00:00.000Z
 *         updatedAt: 2000-01-01T00:00:00.000Z
 *    400:
@@ -136,7 +133,7 @@
 *         email: johndoe@mail.com
 *         password: $2b$10$A7gqzQD5E/NJl4NJHeLpEuHK8cIsFLEBz4RSLKqua8N1EKFnB53Vy
 *         phone_number: 81121934455
-*         address: Jakarta
+*         address: Mampang PrPt.
 *         image_url: null
 *         city: Jakarta
 *         createdAt: 2000-01-01T00:00:00.000Z
@@ -144,7 +141,7 @@
 *    500:
 *     description: Internal Service Error
 * @swagger
-* /auth/user/{id}:
+* /auth/user:
 *  put:
 *   tags:
 *    - auth
@@ -189,7 +186,7 @@
 *         description: Location/City
 *         example: Jakarta
 *   responses:
-*    201:
+*    200:
 *     description: OK
 *     content:
 *      body:
@@ -200,8 +197,9 @@
 *         email: johndoe@mail.com
 *         password: $2b$10$A7gqzQD5E/NJl4NJHeLpEuHK8cIsFLEBz4RSLKqua8N1EKFnB53Vy
 *         phone_number: 81121934455
-*         address: Jakarta
+*         address: Mampang PrPt.
 *         image_url: null
+*         city: Jakarta
 *         createdAt: 2000-01-01T00:00:00.000Z
 *         updatedAt: 2000-01-01T00:00:00.000Z
 *    400:
@@ -211,6 +209,52 @@
 *       example:
 *        name: badRequestEmail
 *        message: Email already exists
+*    500:
+*     description: Internal Service Error
+* @swagger
+* /auth/change-password:
+*  put:
+*   tags:
+*    - auth
+*   description: Register Account
+*   parameters:
+*    - in: header
+*      name: access_token
+*      required: true
+*   requestBody:
+*    content:
+*     multipart/form-data:
+*      schema:
+*       type: object
+*       properties:
+*        current_password:
+*         type: string
+*         description: Current Password
+*         example: 123456
+*        new_password:
+*         type: string
+*         description: Current Password
+*         example: 123456
+*        confirm_password:
+*         type: string
+*         description: Current Password
+*         example: 123456
+*   responses:
+*    200:
+*     description: OK
+*     content:
+*      body:
+*       schema:
+*        example: 
+*         name: OK
+*         message: Change password success
+*    400:
+*     description: Wrong Password
+*     content:
+*      schema:
+*       example:
+*        name: wrongPassword
+*        message: Password is wrong
 *    500:
 *     description: Internal Service Error
 */

@@ -8,7 +8,7 @@ const Auth = require('../../middlewares/autentication')
 
 router.use('/product', Auth.authentication, ProductRouter)
 router.use('/order', Auth.authentication, OrderRouter)
-router.use('/banner', Auth.authentication, BannerRouter)
+router.use('/banner', BannerRouter)
 router.use('/category', CategoryRouter)
 
 module.exports = router

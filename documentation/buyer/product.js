@@ -3,7 +3,7 @@
  * /buyer/product:
  *  get:
  *   tags:
- *    - buyer
+ *    - buyer - product
  *   description: Fetch Products
  *   parameters:
  *    - in: query
@@ -12,6 +12,10 @@
  *      name: category_id
  *    - in: query
  *      name: search
+ *    - in: query
+ *      name: page
+ *    - in: query
+ *      name: per_page
  *   responses:
  *    200:
  *     description: OK
@@ -21,6 +25,7 @@
  *        example:
  *          - id: 1
  *            name: sepatu
+ *            description: Description Sepatu
  *            base_price: 1000000
  *            image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-sepatu.jpg?alt=media
  *            image_name: PR-1654962957757-sepatu.jpg
@@ -40,6 +45,7 @@
  *          - id: 2
  *            name: baju
  *            base_price: 500000
+ *            description: Description Baju
  *            image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-baju.jpg?alt=media
  *            image_name: PR-1654962957757-baju.jpg
  *            location: Bandung
@@ -61,7 +67,7 @@
  * /buyer/product/{id}:
  *  get:
  *   tags:
- *    - buyer
+ *    - buyer - product
  *   description: Fetch Product By ID
  *   parameters:
  *    - in: path
@@ -76,6 +82,7 @@
  *        example:
  *         id: 1
  *         name: sepatu
+ *         description: Description Sepatu
  *         base_price: 1000000
  *         image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-sepatu.jpg?alt=media
  *         image_name: PR-1654962957757-sepatu.jpg

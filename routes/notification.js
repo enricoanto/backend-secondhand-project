@@ -4,7 +4,7 @@ const NotificationController = require('../controllers/notification')
 const Auth = require('../middlewares/autentication')
 
 router.get ('/', Auth.authentication, NotificationController.fetchAllNotifications)
-router.get ('/:id',Auth.authentication, NotificationController.getNotificationById)
-router.patch ('/:id',Auth.authentication, NotificationController.readNotificationById)
+router.get ('/:id',Auth.authentication, Auth.notificationAuthorization, NotificationController.getNotificationById)
+router.patch ('/:id',Auth.authentication, Auth.notificationAuthorization, NotificationController.readNotificationById)
 
 module.exports = router

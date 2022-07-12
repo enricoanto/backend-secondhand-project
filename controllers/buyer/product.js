@@ -1,33 +1,59 @@
 'use strict'
-const { Product, Category } = require('../../models')
+const { Product, Category, User } = require('../../models')
 const { Op } = require("sequelize");
 
 class ProductController {
     static async getMyProducts(req, res, next) {
         try {
-            const { status, category_id, search } = req.query;
+            const { status, category_id, search, page, per_page } = req.query;
             let filter = []
             if (status) { filter.push({ status }) }
             if (category_id) { filter.push({ '$Categories.id$': category_id }) }
             if (search) {
-                filter.push({ name: { [Op.like]: `%${search}%` } })
+                filter.push({ name: { [Op.iLike]: `%${search}%` } })
             }
-
-            const products = await Product.findAll({
-                where: {
-                    [Op.and]: filter
-                },
-                include: [{
-                    model: Category,
-                    through: {
-                        attributes: []
+            if (page && per_page) {
+                let offset = per_page * (page - 1)
+                const products = await Product.findAndCountAll({
+                    limit: per_page,
+                    offset,
+                    order: [['name', 'ASC'], ['id', 'ASC']],
+                    where: {
+                        [Op.and]: filter
                     },
-                    attributes: {
-                        exclude: ['createdAt', 'updatedAt']
-                    }
-                }]
-            })
-            res.status(200).json(products)
+                    include: [{
+                        model: Category,
+                        through: {
+                            attributes: []
+                        },
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt']
+                        }
+                    }]
+                })
+                const pagination = {
+                    page: +page,
+                    per_page: +per_page,
+                    data: products.rows
+                }
+                res.status(200).json(pagination)
+            } else {
+                const products = await Product.findAll({
+                    where: {
+                        [Op.and]: filter
+                    },
+                    include: [{
+                        model: Category,
+                        through: {
+                            attributes: []
+                        },
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt']
+                        }
+                    }]
+                })
+                res.status(200).json(products)
+            }
 
         } catch (err) {
             next(err)
@@ -47,6 +73,11 @@ class ProductController {
                     },
                     attributes: {
                         exclude: ['createdAt', 'updatedAt', 'ProductCategory']
+                    }
+                }, {
+                    model: User,
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt', 'password']
                     }
                 }]
             })

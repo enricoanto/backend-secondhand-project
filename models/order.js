@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
     product_id: DataTypes.INTEGER,
     buyer_id: DataTypes.INTEGER,
     price: DataTypes.INTEGER,
+    transaction_date: DataTypes.DATE,
+    product_name: DataTypes.STRING,
+    base_price: DataTypes.STRING,
+    image_product: DataTypes.STRING,
     status: DataTypes.ENUM(['pending', 'accepted', 'declined'])
   }, {
     hooks: {

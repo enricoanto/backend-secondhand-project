@@ -22,8 +22,38 @@ const errorHandler = (err, req, res, next) => {
             err.message = "This product has maximum orders"
             code = 400
             break
+        case "maxFile":
+            err.message = "Max file upload 1 MB"
+            code = 400
+            break
+        case "formatError":
+            err.message = "File upload must jpeg/jpg/png file"
+            code = 400
+            break
         case "redundantOrder":
             err.message = "Product has been order"
+            code = 400
+            break
+        case "SequelizeValidationError":
+            code = 400
+            break
+        case "SequelizeDatabaseError":
+            code = 400
+            break
+        case "noFile":
+            err.message = "there are no files to upload"
+            code = 400
+            break
+        case "notCategory":
+            err.message = "Product doesn't have category"
+            code = 400
+            break
+        case 'wrongPassword':
+            err.message = "Password is wrong."
+            code = 400
+            break
+        case 'wrongConfirmPassword':
+            err.message = "Confirm password is different."
             code = 400
             break
         case 'wrongEmailPassword':
@@ -47,8 +77,7 @@ const errorHandler = (err, req, res, next) => {
             code = 404
             break
         default:
-            res.locals.message = err.message
-            res.status(err.status || 500)
+            res.status(500).json(err)
 
     }
     res.status(code).json(err)

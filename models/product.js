@@ -31,14 +31,59 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Product.init({
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    base_price: DataTypes.INTEGER,
-    image_url: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "name cannot empty"
+        }
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "description cannot empty"
+        }
+      }
+    },
+    base_price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "base price cannot empty"
+        }
+      }
+    },
+    image_url:  DataTypes.STRING,
     image_name: DataTypes.STRING,
-    location: DataTypes.STRING,
-    user_id: DataTypes.INTEGER,
-    status: DataTypes.STRING
+    location: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "location cannot empty"
+        }
+      }
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: "user id cannot empty"
+        }
+      }
+    },
+    status: DataTypes.ENUM(['available', 'sold']),
   }, {
     hooks: {
       beforeCreate: (product) => {

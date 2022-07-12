@@ -1,5 +1,5 @@
 'use strict'
-const { History } = require('../models')
+const { History, User } = require('../models')
 
 class HistoryController {
     static async getMyHistories(req, res, next) {
@@ -24,7 +24,7 @@ class HistoryController {
                     id
                 }
             })
-                res.status(200).json(history)
+            res.status(200).json(history)
         } catch (err) {
             next(err)
         }

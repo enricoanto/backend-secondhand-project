@@ -1,5 +1,5 @@
 const { verifyToken } = require('../helpers/jwt');
-const { User, Product, Order } = require('../models')
+const { User, Product, Order, Wishlist, Notification } = require('../models')
 
 class Auth {
     static async authentication(req, res, next) {
@@ -66,6 +66,48 @@ class Auth {
             if (!order) {
                 next({ name: "orderNotFound" })
             } else if (order.Product.user_id !== user_id) {
+                next({name: 'notAllowed'})
+            } else {
+                next()
+            }
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    static async wishlistAuthorization(req, res, next) {
+        try {
+            const id = req.params.id
+            const user_id = req.userData.id
+            const wishlist = await Wishlist.findOne({
+                where: {
+                    id
+                }
+            })
+            if (!wishlist) {
+                next({ name: "wishlistNotFound" })
+            } else if (wishlist.user_id !== user_id) {
+                next({name: 'notAllowed'})
+            } else {
+                next()
+            }
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    static async notificationAuthorization(req, res, next) {
+        try {
+            const id = req.params.id
+            const user_id = req.userData.id
+            const notification = await Notification.findOne({
+                where: {
+                    id
+                }
+            })
+            if (!notification) {
+                next({ name: "notificiationNotFound" })
+            } else if (notification.receiver_id !== user_id) {
                 next({name: 'notAllowed'})
             } else {
                 next()

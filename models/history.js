@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
   History.init({
     product_name: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    category: DataTypes.STRING,
     transaction_date: DataTypes.DATE,
     status: DataTypes.STRING,
     user_id: DataTypes.INTEGER,

@@ -1,59 +1,29 @@
 /**
  * @swagger
  * /seller/banner:
- *  post:
+ *  get:
  *   tags:
- *    - seller
- *   description: Add Banner
- *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
- *   requestBody:
- *    content:
- *     multipart/form-data:
- *      schema:
- *       type: object
- *       required:
- *        - name
- *        - image
- *       properties:
- *        name:
- *         type: string
- *         example: Promo
- *        image:
- *         type: string
- *         format: binary
- *         description: format jpg/png
- *         example: Promo.jpg
+ *    - seller - banner
+ *   description: Fetch Banners
  *   responses:
  *    200:
  *     description: OK
- * @swagger
- * /seller/banner:
- *  get:
- *   tags:
- *    - seller
- *   description: Fetch Banners By ID
- *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
- *      schema:
- *        type: string
- *        description: The Banner ID
- *   responses:
- *    201:
- *     description: OK
+ *     content:
+ *      body:
+ *       schema:
+ *       example:
+ *        - id: 1
+ *          name: Promo
+ *          image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/banner%2FBAN-1656828994177-promo.png?alt=media
+ *        - id: 2
+ *          name: Lebran
+ *          image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/banner%2FBAN-1656828994176-lebaran.png?alt=media
  * /seller/Banner/{id}:
  *  get:
  *   tags:
- *    - seller
+ *    - seller - banner
  *   description: Fetch Banner by ID
  *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
  *    - in: path
  *      name: id
  *      required: true
@@ -61,22 +31,13 @@
  *        type: integer
  *        description: The Banner ID
  *   responses:
- *    201:
+ *    200:
  *     description: OK
- * @swagger
- * /seller/banner/{id}:
- *  delete:
- *   tags:
- *    - seller
- *   description: Delete Banner By ID
- *   parameters:
- *    - in: header
- *      name: access_token
- *      required: true
- *    - in: path
- *      name: id   # Note the name is the same as in the path
- *      required: true
- *   responses:
- *    201:
- *     description: OK
+*     content:
+ *      body:
+ *       schema:
+ *       example:
+ *          id: 1
+ *          name: Promo
+ *          image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/banner%2FBAN-1656828994177-promo.png?alt=media
  */

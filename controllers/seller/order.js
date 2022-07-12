@@ -5,20 +5,37 @@ class OrderController {
     static async getMyOrders(req, res, next) {
         try {
             const user_id = req.userData.id
+            const status = req.query.status
+            let filter
+            if (status) {
+                filter = {
+                    '$Product.user_id$': user_id,
+                    status
+                }
+            } else {
+                filter = {
+                    '$Product.user_id$': user_id,
+                }
+            }
             const orders = await Order.findAll({
                 include: [{
-                    model: Product, attributes: {
-                        exclude: ['id', 'createdAt', 'updatedAt']
-                    }
+                    model: Product,
+                    attributes: {
+                        exclude: ['id', 'createdAt', 'updatedAt'],
+                    },
+                    include: [{
+                        model: User,
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt', 'password', 'image_url']
+                        }
+                    }]
                 }, {
                     model: User,
                     attributes: {
-                        exclude: ['id', 'createdAt', 'updatedAt', 'password', 'image_url']
+                        exclude: ['createdAt', 'updatedAt', 'password', 'image_url']
                     }
-                }], 
-                    where: {
-                        '$Product.user_id$': user_id
-                    }
+                }],
+                where: filter
             })
             res.status(200).json(orders)
         } catch (err) {
@@ -31,17 +48,23 @@ class OrderController {
             const orders = await Order.findAll({
                 include: [{
                     model: Product, attributes: {
-                        exclude: ['id', 'createdAt', 'updatedAt']
+                        exclude: ['id', 'createdAt', 'updatedAt'],
+                        include: [{
+                            model: User,
+                            attributes: {
+                                exclude: ['createdAt', 'updatedAt', 'password', 'image_url']
+                            }
+                        }]
                     }
                 }, {
                     model: User,
                     attributes: {
-                        exclude: ['id', 'createdAt', 'updatedAt', 'password', 'image_url']
+                        exclude: ['createdAt', 'updatedAt', 'password', 'image_url']
                     }
-                }], 
-                    where: {
-                        product_id
-                    }
+                }],
+                where: {
+                    product_id
+                }
             })
             res.status(200).json(orders)
         } catch (err) {
@@ -55,16 +78,21 @@ class OrderController {
                 include: [{
                     model: Product, attributes: {
                         exclude: ['id', 'createdAt', 'updatedAt']
-                    }
+                    }, include: [{
+                        model: User,
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt', 'password']
+                        }
+                    }]
                 }, {
                     model: User,
                     attributes: {
-                        exclude: ['id', 'createdAt', 'updatedAt', 'password', 'image_url']
+                        exclude: ['createdAt', 'updatedAt', 'password']
                     }
-                }], 
-                    where: {
-                        id
-                    }
+                }],
+                where: {
+                    id
+                }
             })
             res.status(200).json(order)
 
@@ -74,11 +102,12 @@ class OrderController {
     }
     static async editOrder(req, res, next) {
         try {
-            const {status} = req.body
+            const { status } = req.body
             const registrationToken = req.headers.reg_token
             const id = req.params.id
             const order = await Order.update({
-                status
+                status,
+                transaction_date: new Date()
             }, {
                 where: {
                     id
@@ -87,14 +116,15 @@ class OrderController {
                 returning: true
             })
             const buyer = await User.findByPk(order[1][0].buyer_id)
-            const product = await Product.findOne({where:{id:order[1][0].product_id}, include:['User']})
+            const product = await Product.findOne({ where: { id: order[1][0].product_id }, include: ['User'] })
             await History.create({
                 product_name: product.name,
                 price: order[1][0].price,
                 category: 'bought',
                 transaction_date: new Date(),
                 status: order[1][0].status,
-                user_id: order[1][0].buyer_id
+                user_id: order[1][0].buyer_id,
+                image_url: product.image_url
             })
             if (status == 'accepted') {
                 await History.create({
@@ -103,52 +133,35 @@ class OrderController {
                     category: 'sold',
                     transaction_date: new Date(),
                     status: order[1][0].status,
-                    user_id: req.userData.id
+                    user_id: req.userData.id,
+                    image_url: product.image_url
                 })
-                await Product.update({status: 'sold'}, {
+                await Product.update({ status: 'sold' }, {
                     where: {
                         id: product.id
                     }
                 })
-            } 
-            await Notification.create({
-                 product_id: product.id,
-                 bid_price: order[1][0].price,
-                 transaction_date: new Date(), 
-                 status, 
-                 seller_name: product.User.full_name,
-                 buyer_name: buyer.full_name,
-                 receiver_id: buyer.id,
-                 image_url: product.image_url
-            })
+            } else {
+                await Product.update({ status: 'available' }, {
+                    where: {
+                        id: product.id
+                    }
+                })
+            }
             await Notification.create({
                 product_id: product.id,
                 bid_price: order[1][0].price,
-                transaction_date: new Date(), 
-                status, 
+                transaction_date: new Date(),
+                status,
                 seller_name: product.User.full_name,
                 buyer_name: buyer.full_name,
-                receiver_id: product.user_id,
-                image_url: product.image_url
-           })
-           if (registrationToken) {
-            var option = {
-                priority: "high",
-                timeToLive: 60*60*24
-            }
-            var payload = {
-                data: {
-                    product_id: product.id,
-                    bid_price: order[1][0].price,
-                    transaction_date: new Date(), 
-                    status, 
-                    seller_name: product.User.full_name,
-                    buyer_name: buyer.full_name,
-                    receiver_id: product.user_id
-               }
-            }
-            await adminNotif.messaging().sendToDevice(registrationToken, payload, option)
-        }
+                receiver_id: buyer.id,
+                image_url: product.image_url,
+                product_name: product.name,
+                base_price: product.base_price,
+                notification_type: 'buyer'
+            })
+           
             res.status(200).json(order[1][0])
         } catch (err) {
             next(err)

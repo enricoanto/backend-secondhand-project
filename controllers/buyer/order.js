@@ -1,11 +1,11 @@
 'use strit'
 const { Order, Product, User, Notification } = require('../../models')
+const { Op } = require("sequelize");
 
 class OrderController {
     static async addOrder(req, res, next) {
         try {
             const buyer_id = req.userData.id
-            const registrationToken = req.headers.reg_token
             const { bid_price, product_id } = req.body
             const product = await Product.findOne({
                 where: {
@@ -13,13 +13,15 @@ class OrderController {
                 },
                 include: ['User', 'Orders']
             })
-            
+            if (!product) {
+                next({ name: "productNotFound" })
+            }
             const buyer = await User.findByPk(buyer_id)
             if (product.user_id == buyer_id) {
                 next({ name: "forBiddenBuy" })
             } else if (product.Orders.length == 4) {
-                next({name: 'maxOrders'})
-            }else {
+                next({ name: 'maxOrders' })
+            } else {
                 const orderExist = await Order.findOne({
                     where: {
                         product_id,
@@ -29,19 +31,28 @@ class OrderController {
                 if (orderExist) {
                     next({ name: "redundantOrder" })
                 } else {
-                    const order = await Order.create({ buyer_id, product_id, price: bid_price })
-                    await Notification.create({ product_id, bid_price, transaction_date: new Date(), status: "bid", seller_name: product.User.full_name, buyer_name: buyer.full_name, receiver_id: buyer_id, image_url: product.image_url })
-                    await Notification.create({ product_id, bid_price, transaction_date: new Date(), status: "bid", seller_name: product.User.full_name, buyer_name: buyer.full_name, receiver_id: product.user_id, image_url: product.image_url })
-                    if (registrationToken) {
-                        var option = {
-                            priority: "high",
-                            timeToLive: 60*60*24
-                        }
-                        var payload = {
-                            data: { product_id, bid_price, transaction_date: new Date(), status: "bid", seller_name: product.User.full_name, buyer_name: buyer.full_name, receiver_id: buyer_id }
-                        }
-                        await adminNotif.messaging().sendToDevice(registrationToken, payload, option)
-                    }
+                    const order = await Order.create({
+                        buyer_id,
+                        product_id,
+                        price: bid_price,
+                        product_name: product.name,
+                        base_price: product.base_price,
+                        product_image: product.image_url,
+                    })
+                    await Notification.create({
+                        product_id, bid_price,
+                        bid_price,
+                        transaction_date: new Date(),
+                        status: "bid",
+                        seller_name: product.User.full_name,
+                        buyer_name: buyer.full_name,
+                        receiver_id: product.user_id,
+                        image_url: product.image_url,
+                        product_name: product.name,
+                        base_price: product.base_price,
+                        order_id: order.id,
+                        notification_type: 'seller'
+                    })
                     res.status(201).json(order)
                 }
             }
@@ -62,11 +73,16 @@ class OrderController {
                 include: [{
                     model: Product, attributes: {
                         exclude: ['id', 'createdAt', 'updatedAt']
-                    }
+                    }, include: [{
+                        model: User,
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt', 'password', 'image_url']
+                        }
+                    }]
                 }, {
                     model: User,
                     attributes: {
-                        exclude: ['id', 'createdAt', 'updatedAt', 'password', 'image_url']
+                        exclude: ['createdAt', 'updatedAt', 'password', 'image_url']
                     }
                 }]
             })
@@ -90,12 +106,17 @@ class OrderController {
                 },
                 include: [{
                     model: Product, attributes: {
-                        exclude: ['id', 'createdAt', 'updatedAt']
-                    }
+                        exclude: ['id', 'createdAt', 'updatedAt'],
+                    }, include: [{
+                        model: User,
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt', 'password', 'image_url']
+                        }
+                    }]
                 }, {
                     model: User,
                     attributes: {
-                        exclude: ['id', 'createdAt', 'updatedAt', 'password', 'image_url']
+                        exclude: ['createdAt', 'updatedAt', 'password', 'image_url']
                     }
                 }]
             })
@@ -105,48 +126,32 @@ class OrderController {
         }
 
     }
-    static async editOrder(req, res, nex) {
+    static async editOrder(req, res, next) {
         try {
             const buyer_id = req.userData.id
             const id = req.params.id
-            const { price, product_id } = req.body
-            const product = await Product.findOne({
+            const { bid_price } = req.body
+
+            const order = await Order.update({
+                buyer_id,
+                price: bid_price,
+                status: 'pending'
+            }, {
                 where: {
-                    id: product_id,
-                    user_id: buyer_id
-                }
-            })
-            if (product) {
-                next({name: 'forBiddenBuy'})
-            } else {
-                const orderExist = await Order.findOne({
-                    where: {
-                        product_id,
-                        buyer_id
+                    id,
+                    status: {
+                        [Op.or]: ['pending', 'declined']
                     }
-                })
-                if (orderExist) {
-                    next({ name: "redundantOrder" })
-                } else {
-                    const order = await Order.update({
-                        buyer_id,
-                        product_id,
-                        price
-                    }, {
-                        where: {
-                            id
-                        },
-                        returning: true
-                    })
-                    res.status(201).json(order)
-                }
-            }
+                },
+                returning: true
+            })
+            res.status(200).json(order[1][0])
 
         } catch (err) {
             next(err)
         }
     }
-    static async deleteOrder(req, res, nex) {
+    static async deleteOrder(req, res, next) {
         try {
             const id = req.params.id
             await Order.destroy({
@@ -154,6 +159,7 @@ class OrderController {
                     id
                 }
             })
+            res.status(200).json({ name: "success", message: "Order has been deleted." })
         } catch (err) {
             next(err)
         }

@@ -3,7 +3,7 @@
  * /seller/product:
  *  post:
  *   tags:
- *    - seller
+ *    - seller - product
  *   description: Fetch Products
  *   parameters:
  *    - in: header
@@ -58,6 +58,7 @@
  *        example:
  *         id: 1
  *         name: sepatu
+ *         description: Description Sepatu
  *         base_price: 1000000
  *         image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-sepatu.jpg?alt=media
  *         image_name: PR-1654962957757-sepatu.jpg
@@ -87,7 +88,7 @@
  * /seller/product:
  *  get:
  *   tags:
- *    - seller
+ *    - seller - product
  *   description: Register Account
  *   parameters:
  *    - in: header
@@ -102,6 +103,7 @@
  *        example:
  *         - id: 1
  *           name: sepatu
+ *           description: Description Sepatu
  *           base_price: 1000000
  *           image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-sepatu.jpg?alt=media
  *           image_name: PR-1654962957757-sepatu.jpg
@@ -111,6 +113,7 @@
  *           updated_at: 2000-01-01T00:00:00.000Z
  *         - id: 2
  *           name: baju
+ *           description: Description Baju
  *           base_price: 500000
  *           image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-baju.jpg?alt=media
  *           image_name: PR-1654962957757-baju.jpg
@@ -141,7 +144,7 @@
  * /seller/product/{id}:
  *  get:
  *   tags:
- *    - seller
+ *    - seller - product
  *   description: Register Account
  *   parameters:
  *    - in: header
@@ -159,6 +162,7 @@
  *        example:
  *         id: 1
  *         name: sepatu
+ *         description: Description Sepatu
  *         base_price: 1000000
  *         image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-sepatu.jpg?alt=media
  *         image_name: PR-1654962957757-sepatu.jpg
@@ -197,7 +201,7 @@
  * /seller/product/{id}:
  *  put:
  *   tags:
- *    - seller
+ *    - seller - product
  *   description: Fetch Products
  *   parameters:
  *    - in: header
@@ -248,6 +252,65 @@
  *        example:
  *         id: 1
  *         name: sepatu
+ *         description: Description Sepatu
+ *         base_price: 1000000
+ *         image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-sepatu.jpg?alt=media
+ *         image_name: PR-1654962957757-sepatu.jpg
+ *         location: Bandung
+ *         user_id: 1
+ *         created_at: 2000-01-01T00:00:00.000Z
+ *         updated_at: 2000-01-01T00:00:00.000Z
+  *    400:
+ *     description: Not Found
+ *     content:
+ *      body:
+ *       schema:
+ *        example:
+ *         name: productNotFound
+ *         message: Product is not found
+ *    403:
+ *     description: Unauthorized
+ *     content:
+ *      body:
+ *       schema:
+ *        example:
+ *         name: notLogin
+ *         message: You are not login/access_token is wrong
+ *    500:
+ *     description: Internal Service Error
+ * @swagger
+ * /seller/product/{id}:
+ *  patch:
+ *   tags:
+ *    - seller - product
+ *   description: Fetch Products
+ *   parameters:
+ *    - in: header
+ *      name: access_token
+ *      required: true
+ *    - in: path
+ *      name: id   # Note the name is the same as in the path
+ *      required: true
+ *   requestBody:
+ *    content:
+ *     multipart/form-data:
+ *      schema:
+ *       type: object
+ *       properties:
+ *        status:
+ *         required: true
+ *         enum: [available, seller]
+ *         type: string
+ *   responses:
+ *    200:
+ *     description: OK
+ *     content:
+ *      body:
+ *       schema:
+ *        example:
+ *         id: 1
+ *         name: sepatu
+ *         description: Description Sepatu
  *         base_price: 1000000
  *         image_url: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1654962957757-sepatu.jpg?alt=media
  *         image_name: PR-1654962957757-sepatu.jpg
@@ -277,7 +340,7 @@
  * /seller/product/{id}:
  *  delete:
  *   tags:
- *    - seller
+ *    - seller - product
  *   description: Register Account
  *   parameters:
  *    - in: header
