@@ -19,6 +19,7 @@ class WishlistController {
 
     static async fetchWishlists (req, res, next) {
         try {
+            console.log("xxxx")
             const user_id = req.userData.id
             const wishlists = await Wishlist.findAll({
                 where: {
@@ -35,7 +36,13 @@ class WishlistController {
     static async fetchWishlistbyId (req, res, next) {
         const id = req.params.id
         try {
-
+            const wishlist = await Wishlist.findOne({
+                where: {
+                    id
+                },
+                include: [{model: Product}]
+            })
+            res.status(200).json(wishlist)
         } catch (err) {
             next(err)
         }
@@ -52,7 +59,7 @@ class WishlistController {
                 user_id: wishlist.user_id,
                 bid_price
             })
-            res.status(201).json(order)
+            res.status(200).json(order)
         } catch(err) {
             next(err)
         }

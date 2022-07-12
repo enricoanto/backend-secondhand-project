@@ -176,9 +176,6 @@ class ProductController {
                 } else if (format.filter(el => image.mimetype.match(el)).length === 0) {
                     return next({ name: 'formatError' })
                 } else {
-                    if (productExist.image_name) {
-                        await app.locals.bucket.file(`products/${productExist.image_name}`).delete()
-                    }
                     let image = req.files.image;
                     image_name = `PR-${Number(new Date())}-${image.name}`
                     image_name = image_name.replace(/ /g, "_")
@@ -224,9 +221,6 @@ class ProductController {
             if (productExist.length) {
                 next({ name: "redundantOrder" })
             } else {
-                if (productExist.image_name) {
-                    await app.locals.bucket.file(`products/${productExist.image_name}`).delete()
-                }
                 await Product.destroy({
                     where: {
                         id

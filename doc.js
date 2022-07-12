@@ -211,6 +211,7 @@ const options = {
         "./documentation/seller/order.js",
         "./documentation/buyer/product.js",
         "./documentation/buyer/order.js",
+        "./documentation/buyer/wishlist.js",
         "./doc.js"]
 }
 const swaggerDocs = swaggerJsdoc(options)
