@@ -29,7 +29,8 @@ class ProductController {
                         attributes: {
                             exclude: ['createdAt', 'updatedAt']
                         }
-                    }]
+                    }],
+                    subQuery: false
                 })
                 const pagination = {
                     page: +page,
