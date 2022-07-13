@@ -132,6 +132,13 @@ class OrderController {
             const id = req.params.id
             const { bid_price } = req.body
 
+            const product = await Product.findOne({
+                where: {
+                    id: product_id
+                },
+                include: ['User', 'Orders']
+            })
+
             const order = await Order.update({
                 buyer_id,
                 price: bid_price,
@@ -144,6 +151,21 @@ class OrderController {
                     }
                 },
                 returning: true
+            })
+
+            await Notification.create({
+                product_id, bid_price,
+                bid_price,
+                transaction_date: new Date(),
+                status: "bid",
+                seller_name: product.User.full_name,
+                buyer_name: buyer.full_name,
+                receiver_id: product.user_id,
+                image_url: product.image_url,
+                product_name: product.name,
+                base_price: product.base_price,
+                order_id: order.id,
+                notification_type: 'seller'
             })
             res.status(200).json(order[1][0])
 
