@@ -31,6 +31,7 @@ class OrderController {
                 if (orderExist) {
                     next({ name: "redundantOrder" })
                 } else {
+                    
                     const order = await Order.create({
                         buyer_id,
                         product_id,
@@ -39,19 +40,14 @@ class OrderController {
                         base_price: product.base_price,
                         product_image: product.image_url,
                     })
-                    const product = await Product.findOne({
-                        where: {
-                            id: product_id
-                        },
-                        include: ['Orders']
-                    })
-                    if (product.Orders  == 4) {
-                        await Product.update({
+
+                    // if (product.Orders  == 4) {
+                    //     await Product.update({
                             
-                        })
-                    }
+                    //     })
+                    // }
                     await Notification.create({
-                        product_id, bid_price,
+                        product_id,
                         bid_price,
                         transaction_date: new Date(),
                         status: "bid",
