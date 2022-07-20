@@ -34,6 +34,9 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate: (user)=> {
         user.status = 'pending'
+      },
+      afterCreate: (order) => {
+        console.log(order)
       }
     },
     sequelize,

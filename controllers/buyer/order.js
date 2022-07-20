@@ -38,7 +38,8 @@ class OrderController {
                         price: bid_price,
                         product_name: product.name,
                         base_price: product.base_price,
-                        product_image: product.image_url,
+                        image_product: product.image_url,
+                        transaction_date: new Date()
                     })
 
                     // if (product.Orders  == 4) {
