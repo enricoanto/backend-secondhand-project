@@ -142,7 +142,8 @@ class OrderController {
             const buyer_id = req.userData.id
             const id = req.params.id
             const { bid_price } = req.body
-
+            
+            const buyer = await User.findByPk(buyer_id)
             const product = await Product.findOne({
                 where: {
                     id: product_id
