@@ -56,6 +56,10 @@ const errorHandler = (err, req, res, next) => {
             err.message = "Confirm password is different."
             code = 400
             break
+        case 'productSold':
+            err.message = "Product has been sold"
+            code = 400
+            break
         case 'wrongEmailPassword':
             err.message = "email or password are wrong"
             code = 401

@@ -1,4 +1,4 @@
-const { Wishlist, Product, Order } = require('../../models')
+const { Wishlist, Product, Order, Category } = require('../../models')
 
 class WishlistController {
     static async addwishlist(req, res, next) {
@@ -10,7 +10,8 @@ class WishlistController {
                 user_id
             })
             const product = await Product.findByPk(product_id)
-
+            if (!product) { return next({name: 'productNotFound'}) }
+            if (product.status == 'sold') { return next({name: 'productSold'})}
             res.status(201).json({ name: 'OK', product })
         } catch (err) {
             next(err)
@@ -28,7 +29,16 @@ class WishlistController {
                     model: Product,
                     attributes: {
                         exclude: ['createdAt', 'updatedAt']
-                    }
+                    },
+                    include: [{
+                        model: Category,
+                        through: {
+                            attributes: []
+                        },
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt']
+                        }
+                    }]
                 }]
             })
             res.status(200).json(wishlists)
@@ -44,7 +54,10 @@ class WishlistController {
                 where: {
                     id
                 },
-                include: [{ model: Product }]
+                include: [{ model: Product,
+                     attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                } }]
             })
             res.status(200).json(wishlist)
         } catch (err) {

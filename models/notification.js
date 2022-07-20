@@ -28,13 +28,19 @@ module.exports = (sequelize, DataTypes) => {
     bid_price: DataTypes.INTEGER,
     image_url: DataTypes.STRING,
     transaction_date: DataTypes.DATE,
-    status: DataTypes.ENUM('declined', 'accepted', 'bid', 'create'),
+    status: {
+      type: DataTypes.ENUM,
+      values: ['declined', 'accepted', 'bid', 'create']
+    },
     seller_name: DataTypes.STRING,
     buyer_name: DataTypes.STRING,
     receiver_id: DataTypes.INTEGER,
     image_url: DataTypes.INTEGER,
     read: DataTypes.BOOLEAN,
-    notification_type: DataTypes.ENUM('buyer', 'seller'),
+    notification_type: {
+      type: DataTypes.ENUM,
+      values: ['buyer', 'seller']
+    },
     order_id: DataTypes.INTEGER
   }, { 
     hooks: {

@@ -29,14 +29,14 @@ module.exports = (sequelize, DataTypes) => {
     product_name: DataTypes.STRING,
     base_price: DataTypes.STRING,
     image_product: DataTypes.STRING,
-    status: DataTypes.ENUM(['pending', 'accepted', 'declined'])
+    status: {
+      type: DataTypes.ENUM,
+      values: ['pending', 'accepted', 'declined']
+    }
   }, {
     hooks: {
       beforeCreate: (user)=> {
         user.status = 'pending'
-      },
-      afterCreate: (order) => {
-        console.log(order)
       }
     },
     sequelize,
