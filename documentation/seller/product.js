@@ -299,7 +299,7 @@
  *       properties:
  *        status:
  *         required: true
- *         enum: [available, seller]
+ *         enum: [available, sold]
  *         type: string
  *   responses:
  *    200:

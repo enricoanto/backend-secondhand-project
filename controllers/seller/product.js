@@ -257,6 +257,36 @@ class ProductController {
                 returning: true
             })
 
+            const order = await Order.update({
+                status: 'declined'
+            }, {
+                where: {
+                    product_id: product[1][0].id,
+                    status: 'accepted'
+                },
+                returning: true
+            })
+            
+            if (!order[0]) {
+                return res.status(400).json({name: 'notSold', message: 'Product has not sold yet' })
+            }
+            const seller = await User.findByPk(product[1][0].user_id)
+            const buyer = await User.findByPk(order[1][0].buyer_id)
+          
+            await Notification.create({
+                product_id: product[1][0].id,
+                bid_price: order[1][0].price,
+                transaction_date: new Date(),
+                status: "declined",
+                seller_name: seller.full_name,
+                buyer_name: buyer.full_name,
+                receiver_id: buyer.id,
+                image_url: product[1][0].image_url,
+                product_name: product[1][0].name,
+                base_price: product[1][0].base_price,
+                order_id: order[1][0].id,
+                notification_type: 'buyer'
+            })
             res.status(200).json(product[1][0])
         } catch (err) {
             next(err)
