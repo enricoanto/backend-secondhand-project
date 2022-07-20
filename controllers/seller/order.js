@@ -103,7 +103,6 @@ class OrderController {
     static async editOrder(req, res, next) {
         try {
             const { status } = req.body
-            const registrationToken = req.headers.reg_token
             const id = req.params.id
             const order = await Order.update({
                 status,

@@ -1,9 +1,9 @@
-const {Wishlist, Product, Order } = require('../../models')
+const { Wishlist, Product, Order } = require('../../models')
 
 class WishlistController {
-    static async addwishlist (req, res, next) {
+    static async addwishlist(req, res, next) {
         try {
-            const {product_id} = req.body
+            const { product_id } = req.body
             const user_id = req.userData.id
             const wishlist = await Wishlist.create({
                 product_id,
@@ -11,43 +11,47 @@ class WishlistController {
             })
             const product = await Product.findByPk(product_id)
 
-            res.status(201).json({name: 'OK', product })
-        } catch(err) {
+            res.status(201).json({ name: 'OK', product })
+        } catch (err) {
             next(err)
         }
     }
 
-    static async fetchWishlists (req, res, next) {
+    static async fetchWishlists(req, res, next) {
         try {
-            console.log("xxxx")
             const user_id = req.userData.id
             const wishlists = await Wishlist.findAll({
                 where: {
                     user_id
                 },
-                include: [{model: Product}]
+                include: [{
+                    model: Product,
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
+                    }
+                }]
             })
             res.status(200).json(wishlists)
-        } catch  (err) {
+        } catch (err) {
             next(err)
         }
     }
 
-    static async fetchWishlistbyId (req, res, next) {
+    static async fetchWishlistbyId(req, res, next) {
         const id = req.params.id
         try {
             const wishlist = await Wishlist.findOne({
                 where: {
                     id
                 },
-                include: [{model: Product}]
+                include: [{ model: Product }]
             })
             res.status(200).json(wishlist)
         } catch (err) {
             next(err)
         }
     }
-    static async confirmWishlist (req, res, next) {
+    static async confirmWishlist(req, res, next) {
         try {
             const bid_price = req.body.bid_price
             const wishlist_id = req.params.id
@@ -60,11 +64,11 @@ class WishlistController {
                 bid_price
             })
             res.status(200).json(order)
-        } catch(err) {
+        } catch (err) {
             next(err)
         }
     }
-    static async deleteWishlist (req, res, next) {
+    static async deleteWishlist(req, res, next) {
         try {
             const id = req.params.id
             const deleteWishlist = await Wishlist.destroy({
@@ -72,8 +76,8 @@ class WishlistController {
                     id
                 }
             })
-            res.status(200).json({name: 'OK', message: 'Wishlist success Removed.'})
-        } catch(err) {
+            res.status(200).json({ name: 'OK', message: 'Wishlist success Removed.' })
+        } catch (err) {
             next(err)
         }
     }

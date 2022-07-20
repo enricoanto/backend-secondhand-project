@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    status: DataTypes.ENUM(['available', 'sold']),
+    status: DataTypes.ENUM(['available', 'sold', 'full booked']),
   }, {
     hooks: {
       beforeCreate: (product) => {

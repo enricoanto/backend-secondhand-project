@@ -39,6 +39,17 @@ class OrderController {
                         base_price: product.base_price,
                         product_image: product.image_url,
                     })
+                    // const product = await Product.findOne({
+                    //     where: {
+                    //         id: product_id
+                    //     },
+                    //     include: ['Orders']
+                    // })
+                    // if (product.Orders  == 4) {
+                    //     await Product.update({
+                            
+                    //     })
+                    // }
                     await Notification.create({
                         product_id, bid_price,
                         bid_price,
@@ -164,7 +175,7 @@ class OrderController {
                 image_url: product.image_url,
                 product_name: product.name,
                 base_price: product.base_price,
-                order_id: order.id,
+                order_id: order[1][0].id,
                 notification_type: 'seller'
             })
             res.status(200).json(order[1][0])

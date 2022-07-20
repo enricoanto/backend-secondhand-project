@@ -32,12 +32,8 @@ class ProductController {
                     }],
                     subQuery: false
                 })
-                const pagination = {
-                    page: +page,
-                    per_page: +per_page,
-                    data: products.rows
-                }
-                res.status(200).json(pagination)
+            
+                res.status(200).json(products.rows)
             } else {
                 const products = await Product.findAll({
                     where: {
