@@ -116,25 +116,8 @@ class OrderController {
             })
             const buyer = await User.findByPk(order[1][0].buyer_id)
             const product = await Product.findOne({ where: { id: order[1][0].product_id }, include: ['User'] })
-            await History.create({
-                product_name: product.name,
-                price: order[1][0].price,
-                category: 'bought',
-                transaction_date: new Date(),
-                status: order[1][0].status,
-                user_id: order[1][0].buyer_id,
-                image_url: product.image_url
-            })
+
             if (status == 'accepted') {
-                await History.create({
-                    product_name: product.name,
-                    price: order[1][0].price,
-                    category: 'sold',
-                    transaction_date: new Date(),
-                    status: order[1][0].status,
-                    user_id: req.userData.id,
-                    image_url: product.image_url
-                })
                 await Product.update({ status: 'sold' }, {
                     where: {
                         id: product.id
@@ -159,6 +142,15 @@ class OrderController {
                 product_name: product.name,
                 base_price: product.base_price,
                 notification_type: 'buyer'
+            })
+            await History.create({
+                product_name: product.name,
+                price: order[1][0].price,
+                transaction_date: new Date(),
+                status: status,
+                user_id: buyer.id,
+                image_url: product.image_url,
+                product_id: product.id
             })
            
             res.status(200).json(order[1][0])

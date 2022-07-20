@@ -1,5 +1,5 @@
 'use strict'
-const { History, User } = require('../models')
+const { History, User, Product } = require('../models')
 
 class HistoryController {
     static async getMyHistories(req, res, next) {
@@ -8,7 +8,10 @@ class HistoryController {
             const histories = await History.findAll({
                 where: {
                     user_id: user_id
-                }
+                },
+                include: [{
+                    model: Product
+                }]
             })
             res.status(200).json(histories)
 
@@ -22,7 +25,10 @@ class HistoryController {
             const history = await History.findOne({
                 where: {
                     id
-                }
+                },
+                include: [{
+                    model: Product
+                }]
             })
             res.status(200).json(history)
         } catch (err) {

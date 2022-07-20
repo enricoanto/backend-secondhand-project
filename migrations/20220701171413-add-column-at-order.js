@@ -8,6 +8,8 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
+     await queryInterface.addColumn('Orders', 'product_name', Sequelize.STRING, {});
+     await queryInterface.addColumn('Orders', 'base_price', Sequelize.INTEGER,{});
      await queryInterface.addColumn('Orders', 'image_product', Sequelize.STRING, {});
      await queryInterface.addColumn('Orders', 'transaction_date', Sequelize.DATE, {});
   },

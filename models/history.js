@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "id",
         foreignKey: "user_id"
       })
+
+      History.belongsTo(models.Product, {
+        targetKey: "id",
+        foreignKey: "product_id"
+      })
     }
   };
   History.init({
@@ -23,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
     transaction_date: DataTypes.DATE,
     status: DataTypes.STRING,
     user_id: DataTypes.INTEGER,
-    image_url: DataTypes.INTEGER
+    image_url: DataTypes.INTEGER,
+    product_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'History',

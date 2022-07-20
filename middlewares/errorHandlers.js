@@ -80,6 +80,10 @@ const errorHandler = (err, req, res, next) => {
             err.message = "Order is not found"
             code = 404
             break
+        case 'historyNotFound':
+            err.message = "History is not found"
+            code = 404
+            break
         default:
             res.status(500).json(err)
 

@@ -1,5 +1,5 @@
 const { verifyToken } = require('../helpers/jwt');
-const { User, Product, Order, Wishlist, Notification } = require('../models')
+const { User, Product, Order, Wishlist, Notification, History } = require('../models')
 
 class Auth {
     static async authentication(req, res, next) {
@@ -108,6 +108,27 @@ class Auth {
             if (!notification) {
                 next({ name: "notificiationNotFound" })
             } else if (notification.receiver_id !== user_id) {
+                next({name: 'notAllowed'})
+            } else {
+                next()
+            }
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    static async historyAuthorization(req, res, next) {
+        try {
+            const id = req.params.id
+            const user_id = req.userData.id
+            const history = await History.findOne({
+                where: {
+                    id
+                }
+            })
+            if (!history) {
+                next({ name: "historyNotFound" })
+            } else if (history.user_id !== user_id) {
                 next({name: 'notAllowed'})
             } else {
                 next()
