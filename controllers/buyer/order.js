@@ -39,17 +39,17 @@ class OrderController {
                         base_price: product.base_price,
                         product_image: product.image_url,
                     })
-                    // const product = await Product.findOne({
-                    //     where: {
-                    //         id: product_id
-                    //     },
-                    //     include: ['Orders']
-                    // })
-                    // if (product.Orders  == 4) {
-                    //     await Product.update({
+                    const product = await Product.findOne({
+                        where: {
+                            id: product_id
+                        },
+                        include: ['Orders']
+                    })
+                    if (product.Orders  == 4) {
+                        await Product.update({
                             
-                    //     })
-                    // }
+                        })
+                    }
                     await Notification.create({
                         product_id, bid_price,
                         bid_price,
@@ -144,12 +144,6 @@ class OrderController {
             const { bid_price } = req.body
             
             const buyer = await User.findByPk(buyer_id)
-            const product = await Product.findOne({
-                where: {
-                    id: product_id
-                },
-                include: ['User', 'Orders']
-            })
 
             const order = await Order.update({
                 buyer_id,
@@ -159,14 +153,21 @@ class OrderController {
                 where: {
                     id,
                     status: {
-                        [Op.or]: ['pending', 'declined']
+                        [Op.not]: ['accepted']
                     }
                 },
                 returning: true
             })
 
+            const product = await Product.findOne({
+                where: {
+                    id: order[1][0].product_id
+                },
+                include: ['User']
+            })
+         
             await Notification.create({
-                product_id, bid_price,
+                product_id: product.id,
                 bid_price,
                 transaction_date: new Date(),
                 status: "bid",
