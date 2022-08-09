@@ -24,11 +24,8 @@
  *         - id: 1
  *           product_id: 1
  *           buyer_id: 2
- *           price: 500000
- *           transcaction_date: null
- *           product_name: Sepatu
- *           base_price: 1000000
- *           image_product: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1556505199383-add.png?alt=media
+ *           bid_price: 500000
+ *           transcaction_date: 2022-07-02T17:26:29.984Z
  *           status: pending
  *           createdAt: 2022-07-02T17:26:29.984Z
  *           updatedAt: 2022-07-02T17:26:29.984Z
@@ -59,11 +56,8 @@
  *         - id: 2
  *           product_id: 2
  *           buyer_id: 3
- *           price: 4000000
+ *           bid_price: 4000000
  *           transcaction_date: 2022-07-02T17:26:29.984Z
- *           product_name: Mobile Phone
- *           base_price: 5000000
- *           image_product: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-3556505199383-add.png?alt=media
  *           status: accepted
  *           createdAt: 2022-07-02T17:26:29.984Z
  *           updatedAt: 2022-07-02T17:26:29.984Z
@@ -119,10 +113,7 @@
  *           product_id: 1
  *           buyer_id: 2
  *           price: 500000
- *           transcaction_date: null
- *           product_name: Sepatu
- *           base_price: 1000000
- *           image_product: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1556505199383-add.png?alt=media
+ *           transcaction_date: 2022-07-02T17:26:29.984Z
  *           status: pending
  *           createdAt: 2022-07-02T17:26:29.984Z
  *           updatedAt: 2022-07-02T17:26:29.984Z
@@ -176,10 +167,7 @@
  *         product_id: 1
  *         buyer_id: 2
  *         price: 500000
- *         transcaction_date: null
- *         product_name: Sepatu
- *         base_price: 1000000
- *         image_product: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1556505199383-add.png?alt=media
+ *         transcaction_date: 2022-07-02T17:26:29.984Z
  *         status: pending
  *         createdAt: 2022-07-02T17:26:29.984Z
  *         updatedAt: 2022-07-02T17:26:29.984Z
@@ -242,11 +230,8 @@
  *           id: 1
  *           product_id: 1
  *           buyer_id: 2
- *           price: 500000
- *           transcaction_date: 2022-07-02T17:26:29.984Z
- *           product_name: Sepatu
- *           base_price: 1000000
- *           image_product: https://firebasestorage.googleapis.com/v0/b/market-final-project.appspot.com/o/products%2FPR-1556505199383-add.png?alt=media
+ *           transaction_date: 2022-07-02T17:26:29.984Z
+ *           bid_price: 500000
  *           status: declined
  *           user_id: 1
  *           createdAt: 2022-07-02T17:26:29.984Z
